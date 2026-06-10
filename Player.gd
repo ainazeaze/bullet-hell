@@ -1,6 +1,8 @@
 extends CharacterBody2D
 
 const SPEED = 300.0
+const BULLET = preload("res://Bullet.tscn")
+
 var hp = 100
 var xp = 0
 var invincible = false
@@ -26,3 +28,23 @@ func take_damage(amount : int) -> void:
 func _on_invicibility_timer() -> void :
 	invincible = false
 	
+func get_nearest_enemy() -> Node2D:
+	var enemies = get_tree().get_nodes_in_group("enemy")
+	var nearest = null
+	var nearest_dist = INF
+	for enemy in enemies:
+		var dist = global_position.distance_to(enemy.global_position)
+		if dist < nearest_dist:
+			nearest_dist = dist
+			nearest = enemy
+	print("Nearest enemy ",nearest)
+	return nearest
+
+func _on_timer_timeout() -> void:
+	var target = get_nearest_enemy()
+	if target == null:
+			return
+	var bullet = BULLET.instantiate()
+	get_tree().current_scene.add_child(bullet)
+	bullet.global_position = global_position
+	bullet.direction = (target.global_position - global_position).normalized()
