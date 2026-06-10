@@ -6,6 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_e6d4v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s7bn3"]
+radius = 49.23
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1567210184]
 collision_layer = 2
@@ -26,3 +27,4 @@ collision_layer = 2
 shape = SubResource("CircleShape2D_s7bn3")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 const SPEED = 300.0
 var hp = 100
+var xp = 0
 var invincible = false
 
 
