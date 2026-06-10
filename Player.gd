@@ -1,33 +1,21 @@
 extends CharacterBody2D
 
-const SPEED = 300.0
 const BULLET = preload("res://Bullet.tscn")
+const SPEED = 300.0
+const POOL_SIZE = 20
 
 var hp = 100
 var xp = 0
 var invincible = false
 
+@onready var bullet_pool = $BulletPool
 
-func _physics_process(delta: float) -> void:
-	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	velocity = direction * SPEED
-	move_and_slide()
+func _ready() -> void:
+	for i in POOL_SIZE:
+		var b = BULLET.instantiate()
+		b.disable()
+		bullet_pool.add_child(b)
 
-func take_damage(amount : int) -> void:
-	if invincible:
-		return
-	hp -= amount
-	invincible = true
-	print("Player HP: ", hp)
-	if hp <= 0:
-		queue_free()
-		return
-	await get_tree().create_timer(1.0).timeout
-	invincible = false
-
-func _on_invicibility_timer() -> void :
-	invincible = false
-	
 func get_nearest_enemy() -> Node2D:
 	var enemies = get_tree().get_nodes_in_group("enemy")
 	var nearest = null
@@ -37,14 +25,30 @@ func get_nearest_enemy() -> Node2D:
 		if dist < nearest_dist:
 			nearest_dist = dist
 			nearest = enemy
-	print("Nearest enemy ",nearest)
 	return nearest
 
 func _on_timer_timeout() -> void:
 	var target = get_nearest_enemy()
 	if target == null:
+		return
+	for b in bullet_pool.get_children():
+		if not b.visible:
+			b.enable(global_position, (target.global_position - global_position).normalized())
 			return
-	var bullet = BULLET.instantiate()
-	get_tree().current_scene.add_child(bullet)
-	bullet.global_position = global_position
-	bullet.direction = (target.global_position - global_position).normalized()
+
+func _physics_process(delta: float) -> void:
+	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	velocity = direction * SPEED
+	move_and_slide()
+
+func take_damage(amount: int) -> void:
+	if invincible:
+		return
+	hp -= amount
+	print("Player HP: ", hp)
+	if hp <= 0:
+		queue_free()
+		return
+	invincible = true
+	await get_tree().create_timer(1.0).timeout
+	invincible = false

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bm1vb71yu5pxy" path="res://icon.svg" id="2_kne1u"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e80uo"]
+radius = 35.0
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=124683528 groups=["player"]]
 script = ExtResource("1_kpjcp")
@@ -18,5 +19,7 @@ shape = SubResource("CircleShape2D_e80uo")
 
 [node name="Timer" type="Timer" parent="." unique_id=1894780091]
 autostart = true
+
+[node name="BulletPool" type="Node" parent="." unique_id=815098605]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

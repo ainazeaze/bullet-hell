@@ -9,7 +9,17 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	global_position += direction * SPEED * delta
 
+func enable(pos: Vector2, dir: Vector2) -> void:
+	global_position = pos
+	direction = dir
+	visible = true
+	monitoring = true
+
+func disable() -> void:
+	visible = false
+	monitoring = false
+
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy"):
-		body.take_damage(10)
-		queue_free()
+		body.take_damage(15)
+		disable()
