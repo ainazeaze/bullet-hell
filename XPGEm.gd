@@ -7,6 +7,6 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
-		body.xp += xp_value
-		print("XP: ", body.xp)
+		XPSystem.add_xp(xp_value)
+		print("XP: ", XPSystem.xp)
 		queue_free()

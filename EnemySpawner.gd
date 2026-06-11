@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	elapsed += delta
-	var new_wait = max(MIN_WAIT, 2.0 - elapsed * 0.05)
+	var new_wait = max(MIN_WAIT, 2.0 - elapsed * 0.025)
 	$Timer.wait_time = new_wait
 
 func _on_timer_timeout() -> void:
