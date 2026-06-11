@@ -1,11 +1,11 @@
 extends CharacterBody2D
 
 const BULLET = preload("res://Bullet.tscn")
-const SPEED = 300.0
-const POOL_SIZE = 20
+var SPEED = 300.0
+var bullet_damage = 15 
+const POOL_SIZE = 200
 
 var hp = 100
-var xp = 0
 var invincible = false
 
 @onready var bullet_pool = $BulletPool
@@ -45,6 +45,7 @@ func take_damage(amount: int) -> void:
 	if invincible:
 		return
 	hp -= amount
+	$Camera2D.shake(8.0, 0.2)
 	print("Player HP: ", hp)
 	if hp <= 0:
 		queue_free()

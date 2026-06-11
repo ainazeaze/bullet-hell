@@ -8,6 +8,16 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_s7bn3"]
 radius = 49.23
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s7bn3"]
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+gravity = Vector3(0, 98, 0)
+scale_min = 3.0
+scale_max = 6.0
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1567210184 groups=["enemy"]]
 collision_layer = 2
 collision_mask = 2
@@ -25,6 +35,14 @@ collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2049275692]
 shape = SubResource("CircleShape2D_s7bn3")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=2147179786]
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+speed_scale = 3.26
+process_material = SubResource("ParticleProcessMaterial_s7bn3")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
