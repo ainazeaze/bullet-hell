@@ -1,9 +1,9 @@
 extends Area2D
 
-const SPEED = 400.0
+const SPEED = 500.0
 const MAX_LIFETIME = 3.0
 var direction = Vector2.ZERO
-var damage = 15
+var damage = 10
 var lifetime = 0.0
 
 func _ready() -> void:
@@ -32,4 +32,4 @@ func disable() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy"):
 		body.take_damage(damage)
-		disable()
+		disable.call_deferred()

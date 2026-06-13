@@ -9,8 +9,13 @@ var hp = 100
 var invincible = false
 
 @onready var bullet_pool = $BulletPool
+@onready var anim = $AnimatedSprite2D
+
+signal died
 
 func _ready() -> void:
+	anim.play("idle_south")
+	
 	for i in POOL_SIZE:
 		var b = BULLET.instantiate()
 		b.disable()
@@ -41,6 +46,26 @@ func _physics_process(delta: float) -> void:
 	velocity = direction * SPEED
 	move_and_slide()
 
+	var target_anim = "idle_south"
+	if direction == Vector2.ZERO:
+		var current = anim.animation
+		if current.begins_with("run_"):
+			target_anim = current.replace("run_", "idle_")
+		else:
+			target_anim = current
+	else:
+		if direction.x > 0:
+			target_anim = "run_right"
+		elif direction.x < 0:
+			target_anim = "run_left"
+		elif direction.y > 0:
+			target_anim = "run_south"
+		elif direction.y < 0:
+			target_anim = "run_north"
+
+	if anim.animation != target_anim:
+		anim.play(target_anim)
+
 func take_damage(amount: int) -> void:
 	if invincible:
 		return
@@ -48,6 +73,7 @@ func take_damage(amount: int) -> void:
 	$Camera2D.shake(8.0, 0.2)
 	print("Player HP: ", hp)
 	if hp <= 0:
+		died.emit()
 		queue_free()
 		return
 	invincible = true

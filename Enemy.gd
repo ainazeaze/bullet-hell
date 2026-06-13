@@ -2,32 +2,40 @@ extends CharacterBody2D
 
 const SPEED = 100.0
 const XP_GEM = preload("res://XPGem.tscn")
+const FLASH_SHADER = preload("res://flash.gdshader")
 var hp = 30
 var player : Node2D = null
+var dying = false
 
 @onready var area : Area2D = $Area2D
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
-
+	var material = ShaderMaterial.new()
+	material.shader = FLASH_SHADER
+	$Sprite2D.material = material
 
 func take_damage(amount : int) -> void:
-	hp -= amount 
-	modulate = Color(10, 10, 10, 1)
-	await get_tree().create_timer(0.05).timeout
-	modulate = Color(1, 1, 1, 1)
+	if dying:
+		return
+
+	hp -= amount
 	if hp <= 0:
+		dying = true
+
+	$Sprite2D.material.set_shader_parameter("flash", true)
+	await get_tree().create_timer(0.15).timeout
+	$Sprite2D.material.set_shader_parameter("flash", false)
+
+	if dying:
 		var gem = XP_GEM.instantiate()
 		get_tree().current_scene.add_child(gem)
 		gem.global_position = global_position
-		
-		# emit particles before actually destroying the enemy scene
 		var particles = $GPUParticles2D
 		remove_child(particles)
 		get_tree().current_scene.add_child(particles)
 		particles.global_position = global_position
 		particles.emitting = true
-		
 		queue_free()
 
 func _physics_process(delta: float) -> void:

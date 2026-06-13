@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://beyub2qa7ud8c"]
 
 [ext_resource type="Script" uid="uid://bnl46bow1ty22" path="res://Enemy.gd" id="1_s7bn3"]
-[ext_resource type="Texture2D" uid="uid://d3vemyc6djtja" path="res://chef-man-cap-svgrepo-com.svg" id="2_s7bn3"]
+[ext_resource type="Texture2D" uid="uid://bm1vb71yu5pxy" path="res://icon.svg" id="2_s7bn3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e6d4v"]
+radius = 50.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s7bn3"]
 radius = 49.23
@@ -23,8 +24,7 @@ collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_s7bn3")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=166180613]
-scale = Vector2(0.2, 0.2)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2005189892]
 texture = ExtResource("2_s7bn3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1990736348]
